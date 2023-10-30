@@ -290,7 +290,9 @@ bool CDAccess_CCD::Load(const std::string& path, bool image_memcache)
          log_cb(RETRO_LOG_ERROR, "CCD SUB file size mismatch.\n");
          return false;
       }
-
+#if defined(SF2000)
+// TODO: loading a whole .sub file into memory is a problem for our froggy
+#endif
       sub_data = new uint8_t[(uint64)img_numsectors * 96];
       sub_stream.read(sub_data, (uint64)img_numsectors * 96);
    }

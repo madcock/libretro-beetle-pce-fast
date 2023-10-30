@@ -354,7 +354,11 @@ bool CDAccess_Image::LoadSBI(const std::string& sbi_path)
 
 static bool StringToMSF(const char* str, unsigned* m, unsigned* s, unsigned* f)
 {
+#if !defined(SF2000)
    if(sscanf(str, "%u:%u:%u", m, s, f) != 3)
+#else
+   if(sscanf(str, "%d:%d:%d", m, s, f) != 3)
+#endif
    {
       log_cb(RETRO_LOG_ERROR, "M:S:F time \"%s\" is malformed.\n", str);
       return false;
