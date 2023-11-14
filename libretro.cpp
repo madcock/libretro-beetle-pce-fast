@@ -2117,7 +2117,7 @@ bool retro_load_game(const struct retro_game_info *info)
    for(y = 0; y < 2; y++)
    {
      Blip_Buffer_set_sample_rate(&sbuf[y],
-           44100, 50);
+           11025, 50);
      Blip_Buffer_set_clock_rate(&sbuf[y], (long)(PCE_MASTER_CLOCK / 3));
      Blip_Buffer_bass_freq(&sbuf[y], 10);
    }
@@ -2412,7 +2412,7 @@ void retro_get_system_av_info(struct retro_system_av_info *info)
 {
    memset(info, 0, sizeof(*info));
    info->timing.fps            = MEDNAFEN_CORE_TIMING_FPS;
-   info->timing.sample_rate    = 44100;
+   info->timing.sample_rate    = 11025;
    info->geometry.base_width   = MEDNAFEN_CORE_GEOMETRY_BASE_W;
    info->geometry.base_height  = MEDNAFEN_CORE_GEOMETRY_BASE_H;
    info->geometry.max_width    = MEDNAFEN_CORE_GEOMETRY_MAX_W;
@@ -2436,7 +2436,7 @@ void retro_deinit(void)
       log_cb(RETRO_LOG_INFO, "[%s]: Samples / Frame: %.5f\n",
             MEDNAFEN_CORE_NAME, (double)audio_frames / video_frames);
       log_cb(RETRO_LOG_INFO, "[%s]: Estimated FPS: %.5f\n",
-            MEDNAFEN_CORE_NAME, (double)video_frames * 44100 / audio_frames);
+            MEDNAFEN_CORE_NAME, (double)video_frames * 11025 / audio_frames);
    }
 
    libretro_supports_option_categories = false;
