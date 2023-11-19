@@ -366,23 +366,21 @@ else ifeq ($(platform), retrofw)
    FLAGS += -fomit-frame-pointer -ffast-math -march=mips32 -mtune=mips32 -mhard-float -D_GNU_SOURCE
    CXXFLAGS += -std=c++11
    CFLAGS += -std=gnu11
-
+   
 # SF2000
 else ifeq ($(platform), sf2000)
-	TARGET := $(TARGET_NAME)_libretro_$(platform).a
-	MIPS=/opt/mips32-mti-elf/2019.09-03-2/bin/mips-mti-elf-
-	# MIPS=EMIT_EXT_INS=1 /home/icemano/x-tools/mipsel-unknown-elf/bin/mips-mti-elf-
-	CC = $(MIPS)gcc
-	CXX = $(MIPS)g++
-	AR = $(MIPS)ar
-	CFLAGS =-EL -march=mips32 -mtune=mips32 -msoft-float -ffast-math -fomit-frame-pointer
-	CFLAGS+=-G0 -mno-abicalls -fno-pic 
-	# -ffreestanding
-	CFLAGS+=-I../..
-	CFLAGS+=-DSF2000 -DHAVE_STRL -DUSE_LIBRETRO_VFS 
-	CXXFLAGS=$(CFLAGS) -fno-use-cxa-atexit
-	HAVE_CHD = 1
-	STATIC_LINKING = 1
+   TARGET := $(TARGET_NAME)_libretro_$(platform).a
+   MIPS=/opt/mips32-mti-elf/2019.09-03-2/bin/mips-mti-elf-
+   CC = $(MIPS)gcc
+   CXX = $(MIPS)g++
+   AR = $(MIPS)ar
+   CFLAGS = -EL -march=mips32 -mtune=mips32 -msoft-float -G0 -mno-abicalls -fno-pic
+   CFLAGS += -ffast-math -fomit-frame-pointer -ffunction-sections -fdata-sections 
+   CFLAGS+=-I../..
+   CFLAGS+=-DSF2000 -DHAVE_STRL -DUSE_LIBRETRO_VFS 
+   CXXFLAGS=$(CFLAGS) -fno-use-cxa-atexit
+   HAVE_CHD = 1
+   STATIC_LINKING = 1
 
 # MIYOO
 else ifeq ($(platform), miyoo)
@@ -650,7 +648,11 @@ endif
 ifeq ($(DEBUG),1)
    FLAGS += -O0 -g
 else
+ifeq ($(platform), sf2000)
+   FLAGS += -O3 -DNDEBUG $(EXTRA_GCC_FLAGS)
+else
    FLAGS += -O2 -DNDEBUG $(EXTRA_GCC_FLAGS)
+endif
 endif
 
 ifneq (,$(findstring msvc,$(platform)))
