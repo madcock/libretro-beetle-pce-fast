@@ -648,11 +648,7 @@ endif
 ifeq ($(DEBUG),1)
    FLAGS += -O0 -g
 else
-ifeq ($(platform), sf2000)
-   FLAGS += -O3 -DNDEBUG $(EXTRA_GCC_FLAGS)
-else
    FLAGS += -O2 -DNDEBUG $(EXTRA_GCC_FLAGS)
-endif
 endif
 
 ifneq (,$(findstring msvc,$(platform)))
